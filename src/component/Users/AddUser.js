@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Card from "../UI/Card";
 import classes from "./AddUser.module.css";
 import Button from "../UI/Button";
+import ErrorModal from "../UI/ErrorModal";
 function AddUser(props) {
   const [enteredUsername, setEnteredUsername] = useState("");
   const [enteredAge, setEnteredAge] = useState("");
@@ -16,7 +17,7 @@ function AddUser(props) {
       console.log("Unvalid Age");
       return;
     }
-    console.log(enteredUsername, enteredAge);
+    props.onAddUser(enteredUsername, enteredAge);
     setEnteredUsername("");
     setEnteredAge("");
   }
@@ -29,25 +30,30 @@ function AddUser(props) {
   }
 
   return (
-    <Card className={classes.input}>
-      <form onSubmit={addUserHandler}>
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          value={enteredUsername}
-          type="text"
-          onChange={usernameChangeHandler}
-        />
-        <label htmlFor="age">Age (Years)</label>
-        <input
-          id="age"
-          value={enteredAge}
-          type="number"
-          onChange={AgeChangeHandler}
-        />
-        <Button type="submit">Add User</Button>
-      </form>
-    </Card>
+    <div>
+      <ErrorModal title='Warning!' message='Something went wrong. Retry it.'/>
+        <Card className={classes.input}>
+          <form onSubmit={addUserHandler}>
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              value={enteredUsername}
+              type="text"
+              onChange={usernameChangeHandler}
+            />
+            <label htmlFor="age">Age (Years)</label>
+            <input
+              id="age"
+              value={enteredAge}
+              type="number"
+              onChange={AgeChangeHandler}
+            />
+            <Button type="submit" onClick={addUserHandler}>
+              Add User
+            </Button>
+          </form>
+        </Card>
+    </div>
   );
 }
 export default AddUser;
